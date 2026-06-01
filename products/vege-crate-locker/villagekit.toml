@@ -1,0 +1,14 @@
+[product]
+name = "@villagekit/vege-crate-locker"
+label = "Vege Crate Locker Module"
+description = "A customizable modular locker designed specifically for holding vege crates for a pickup service. Fits standard 600mm x 400mm x 220mm crates."
+tags = [
+  'furniture',
+  'storage',
+  'garage',
+  'outdoors',
+  'pickup',
+  'crates'
+]
+type = "kit"
+exports = "./vege-crate-locker.ts"
