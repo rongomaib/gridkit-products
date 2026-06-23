@@ -1,0 +1,6 @@
+[product]
+name = "@villagekit/japanese-tiny-house"
+label = "Japanese Tiny House"
+description = "Compact 4.8 x 2.4 m tiny house floor: 4 x 2400x1200 ply floor panels on the 40 mm grid."
+type = "kit"
+exports = "./japanese-tiny-house.ts"
