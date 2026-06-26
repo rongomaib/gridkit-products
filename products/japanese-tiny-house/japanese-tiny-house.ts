@@ -104,7 +104,7 @@ export const parts = ({
   // Panels span in Y from back eave tip to engawa eave tip, sloped at pitchDeg.
   // The roof is a single plane: z(y) = POST_H_FRONT + (yF − y) × tanPitch.
   // slopedDepthGu = horizontal span / cos(pitch) — the actual length along the slope.
-  const yPanelStart   = yB - EAVE_GU
+  const yPanelStart   = yB
   const yPanelEnd     = yEN + EAVE_GU
   const dyPanel       = yPanelEnd - yPanelStart
   const pitchRad      = pitchDeg * Math.PI / 180
@@ -113,43 +113,41 @@ export const parts = ({
 
   return [
     // ── Posts ─────────────────────────────────────────────────────────────
-    Beam120.Z({ id: 'post-b-w', x: xW, y: yB, z: [0, POST_H_BACK] }),
-    Beam120.Z({ id: 'post-b-m', x: xC, y: yB, z: [0, POST_H_BACK] }),
-    Beam120.Z({ id: 'post-b-e', x: xE, y: yB, z: [0, POST_H_BACK] }),
+    Beam120.Z({ id: 'post-b-w', x: xW, y: yB, z: [0, POST_H_BACK - 4] }),
+    Beam120.Z({ id: 'post-b-m', x: xC, y: yB, z: [0, POST_H_BACK - 2] }),
+    Beam120.Z({ id: 'post-b-e', x: xE, y: yB, z: [0, POST_H_BACK - 4] }),
 
-    Beam120.Z({ id: 'post-f-w', x: xW, y: yF, z: [0, POST_H_FRONT] }),
-    Beam120.Z({ id: 'post-f-m', x: xC, y: yF, z: [0, POST_H_FRONT] }),
-    Beam120.Z({ id: 'post-f-e', x: xE, y: yF, z: [0, POST_H_FRONT] }),
+    Beam120.Z({ id: 'post-f-w', x: xW, y: yF, z: [0, POST_H_FRONT - 5] }),
+    Beam120.Z({ id: 'post-f-m', x: xC, y: yF - 1, z: [0, POST_H_FRONT - 2] }),
+    Beam120.Z({ id: 'post-f-e', x: xE, y: yF, z: [0, POST_H_FRONT - 2] }),
 
-    Beam120.Z({ id: 'post-e-w', x: xW, y: yE, z: [0, POST_H_ENGAWA] }),
-    Beam120.Z({ id: 'post-e-m', x: xC, y: yE, z: [0, POST_H_ENGAWA] }),
-    Beam120.Z({ id: 'post-e-e', x: xE, y: yE, z: [0, POST_H_ENGAWA] }),
+    Beam120.Z({ id: 'post-e-w', x: xW, y: yE, z: [0, POST_H_ENGAWA - 3] }),
+    Beam120.Z({ id: 'post-e-m', x: xC, y: yE, z: [0, POST_H_ENGAWA - 4] }),
+    Beam120.Z({ id: 'post-e-e', x: xE, y: yE, z: [0, POST_H_ENGAWA - 2] }),
 
     // ── Floor beams — X (fit between posts in each bay) ───────────────────
-    Beam120.X({ id: 'beam-fl-x-b-1', x: [xWE, xC], y: yB, z: FLOOR_Z }),
-    Beam120.X({ id: 'beam-fl-x-b-2', x: [xCE, xE], y: yB, z: FLOOR_Z }),
-    Beam120.X({ id: 'beam-fl-x-f-1', x: [xWE, xC], y: yF, z: FLOOR_Z }),
-    Beam120.X({ id: 'beam-fl-x-f-2', x: [xCE, xE], y: yF, z: FLOOR_Z }),
-    Beam120.X({ id: 'beam-fl-x-e-1', x: [xWE, xC], y: yE, z: FLOOR_Z }),
-    Beam120.X({ id: 'beam-fl-x-e-2', x: [xCE, xE], y: yE, z: FLOOR_Z }),
+    Beam120.X({ id: 'beam-fl-x-b-1', x: [xWE - 2, xC - 1], y: yB, z: FLOOR_Z }),
+    Beam120.X({ id: 'beam-fl-x-b-2', x: [xCE - 2, xE - 1], y: yB, z: FLOOR_Z }),
+    Beam120.X({ id: 'beam-fl-x-f-1', x: [xWE - 2, xC - 1], y: yF, z: FLOOR_Z }),
+    Beam120.X({ id: 'beam-fl-x-f-2', x: [xCE - 4, xE - 1], y: yF, z: FLOOR_Z }),
+    Beam120.X({ id: 'beam-fl-x-e-1', x: [xWE - 2, xC - 1], y: yE, z: FLOOR_Z }),
+    Beam120.X({ id: 'beam-fl-x-e-2', x: [xCE - 4, xE - 1], y: yE, z: FLOOR_Z }),
 
     // ── Floor beams — Y (run along each post column) ──────────────────────
-    Beam120.Y({ id: 'beam-fl-y-w-int', x: xW, y: [yB,  yFN], z: FLOOR_Z }),
-    Beam120.Y({ id: 'beam-fl-y-m-int', x: xC, y: [yB,  yFN], z: FLOOR_Z }),
-    Beam120.Y({ id: 'beam-fl-y-e-int', x: xE, y: [yB,  yFN], z: FLOOR_Z }),
-    Beam120.Y({ id: 'beam-fl-y-w-eng', x: xW, y: [yFN, yEN], z: FLOOR_Z }),
-    Beam120.Y({ id: 'beam-fl-y-m-eng', x: xC, y: [yFN, yEN], z: FLOOR_Z }),
-    Beam120.Y({ id: 'beam-fl-y-e-eng', x: xE, y: [yFN, yEN], z: FLOOR_Z }),
+    Beam120.Y({ id: 'beam-fl-y-w-int', x: xW, y: [yB - 1, yFN - 1], z: FLOOR_Z }),
+    Beam120.Y({ id: 'beam-fl-y-m-int', x: xC, y: [yB - 1, yFN - 1], z: FLOOR_Z }),
+    Beam120.Y({ id: 'beam-fl-y-e-int', x: xE, y: [yB - 1, yFN - 1], z: FLOOR_Z }),
+    Beam120.Y({ id: 'beam-fl-y-w-eng', x: xW, y: [yFN - 2, yEN - 2], z: FLOOR_Z }),
+    Beam120.Y({ id: 'beam-fl-y-m-eng', x: xC, y: [yFN - 2, yEN - 2], z: FLOOR_Z }),
+    Beam120.Y({ id: 'beam-fl-y-e-eng', x: xE, y: [yFN - 2, yEN - 2], z: FLOOR_Z }),
 
     // ── Roof — primary 120×120 rails in X ────────────────────────────────
-    // Each bay: two beams lapped at centre post. Extended EAVE_GU past outer posts.
+    // Single continuous beam per row, eave-to-eave. translate.ts splits each beam
+    // at intermediate post intersections automatically for structural analysis.
     // Heights differ per row — this is what shows the monopitch slope in the 3D view.
-    Beam120.X({ id: 'roof-x-b-1', x: [xW - EAVE_GU, xCE],          y: yB, z: ROOF_Z_BACK }),
-    Beam120.X({ id: 'roof-x-b-2', x: [xC,            xEE + EAVE_GU], y: yB, z: ROOF_Z_BACK }),
-    Beam120.X({ id: 'roof-x-f-1', x: [xW - EAVE_GU, xCE],          y: yF, z: ROOF_Z_FRONT }),
-    Beam120.X({ id: 'roof-x-f-2', x: [xC,            xEE + EAVE_GU], y: yF, z: ROOF_Z_FRONT }),
-    Beam120.X({ id: 'roof-x-e-1', x: [xW - EAVE_GU, xCE],          y: yE, z: ROOF_Z_ENGAWA }),
-    Beam120.X({ id: 'roof-x-e-2', x: [xC,            xEE + EAVE_GU], y: yE, z: ROOF_Z_ENGAWA }),
+    Beam120.X({ id: 'roof-x-b', x: [xW - EAVE_GU, xEE + EAVE_GU], y: yB, z: ROOF_Z_BACK }),
+    Beam120.X({ id: 'roof-x-f', x: [xW - EAVE_GU, xEE + EAVE_GU], y: yF, z: ROOF_Z_FRONT }),
+    Beam120.X({ id: 'roof-x-e', x: [xW - EAVE_GU, xEE + EAVE_GU], y: yE, z: ROOF_Z_ENGAWA }),
 
     // ── Roof modules — 1200mm (30gu) wide, sloped at pitchDeg ───────────────
     // GridPanel.create() + rotate() is safe here because holes: false causes
@@ -180,10 +178,10 @@ export const parts = ({
     GridPanel.XY({ id: 'floor-e-2', x: [xCE + 30, xE],       y: [yBN, yF], z: PANEL_Z, holes: false }),
 
     // ── Engawa deck panels ────────────────────────────────────────────────
-    GridPanel.XY({ id: 'engawa-1', x: [xWE,      xWE + 30], y: [yFN, yE], z: PANEL_Z, holes: false }),
-    GridPanel.XY({ id: 'engawa-2', x: [xWE + 30, xC],       y: [yFN, yE], z: PANEL_Z, holes: false }),
-    GridPanel.XY({ id: 'engawa-3', x: [xCE,      xCE + 30], y: [yFN, yE], z: PANEL_Z, holes: false }),
-    GridPanel.XY({ id: 'engawa-4', x: [xCE + 30, xE],       y: [yFN, yE], z: PANEL_Z, holes: false }),
+    GridPanel.XY({ id: 'engawa-1', x: [xWE,      xWE + 30], y: [yFN, yE], z: PANEL_Z - 1, holes: false }),
+    GridPanel.XY({ id: 'engawa-2', x: [xWE + 30, xC],       y: [yFN, yE], z: PANEL_Z - 1, holes: false }),
+    GridPanel.XY({ id: 'engawa-3', x: [xCE,      xCE + 30], y: [yFN, yE], z: PANEL_Z - 1, holes: false }),
+    GridPanel.XY({ id: 'engawa-4', x: [xCE + 30, xE],       y: [yFN, yE], z: PANEL_Z - 1, holes: false }),
 
     // ── Back wall — 2 bays × 3 panels (20gu wide) + clerestory ───────────
     // Standard story: FLOOR_Z → POST_H_FRONT (3×800mm modules)
