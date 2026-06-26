@@ -5,7 +5,10 @@
     "paths": {
       "@villagekit/design/kit": ["../villagekit/core/design/src/kit"],
       "@villagekit/part-gridbeam/creator": ["../villagekit/parts/gridbeam/src/creator"],
-      "@villagekit/part-gridpanel/creator": ["../villagekit/parts/gridpanel/src/creator"]
+      "@villagekit/part-gridpanel/creator": ["../villagekit/parts/gridpanel/src/creator"],
+      "@villagekit/part-timber/creator": ["../villagekit/parts/timber/src/creator"],
+      "@villagekit/part-panel-brace/creator": ["../villagekit/parts/panel-brace/src/creator"],
+      "@villagekit/analysis": ["../villagekit/core/analysis/src/index"]
     }
   },
   "exclude": ["node_modules"]

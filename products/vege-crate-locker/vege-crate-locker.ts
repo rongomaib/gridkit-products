@@ -230,9 +230,9 @@ function doors({ columns, tiers, bayWidth, bayHeight, doorAngle = 0 }: Pick<Opti
 
       let doorPanel = GridPanel.XZ({
         id: `door-panel-t${t}-c${c}`,
-        x: [xStart + bayWidth, xStart - 1],
+        x: [xStart + bayWidth - 1, xStart - 1],
         y: HINGE_DOOR_PANEL_Y - 1.4, // door is 1 unit in front of the post
-        z: [zStart , zStart + bayHeight + 1 ],
+        z: [zStart, zStart + bayHeight + 1],
         fit: 'top',
       })
 
