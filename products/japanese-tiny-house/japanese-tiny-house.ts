@@ -23,7 +23,6 @@ const POST_X = [0, 63, 126] as const
 const POST_Y_BACK  = 0
 const POST_Y_FRONT = 63
 const POST_W = 3   // post section width in gu (120mm)
-const FLOOR_Z = 20
 const EAVE_GU = 30  // 1200mm eave cantilever all four sides
 
 export const parameters = {
@@ -45,21 +44,31 @@ export const parameters = {
     max: 60,
     step: 5,
   },
+  floorHeightGu: {
+    type: 'number' as const,
+    label: 'Floor height (gu)',
+    description: 'Height of the floor above ground in grid units (1 gu = 40 mm). Default 20 = 800 mm sub-floor.',
+    min: 0,
+    max: 40,
+    step: 5,
+  },
 }
 
 export const presets = [
-  { id: 'default',     label: 'Gentle slope (15°)',    values: { pitchDeg: 15, engawaWidthGu: 30 } },
-  { id: 'medium',      label: 'Medium slope (25°)',    values: { pitchDeg: 25, engawaWidthGu: 30 } },
-  { id: 'steep',       label: 'Steep slope (35°)',     values: { pitchDeg: 35, engawaWidthGu: 30 } },
-  { id: 'deep-engawa', label: 'Deep engawa (15°)',     values: { pitchDeg: 15, engawaWidthGu: 45 } },
+  { id: 'default',     label: 'Gentle slope (15°)',    values: { pitchDeg: 15, engawaWidthGu: 30, floorHeightGu: 20 } },
+  { id: 'medium',      label: 'Medium slope (25°)',    values: { pitchDeg: 25, engawaWidthGu: 30, floorHeightGu: 20 } },
+  { id: 'steep',       label: 'Steep slope (35°)',     values: { pitchDeg: 35, engawaWidthGu: 30, floorHeightGu: 20 } },
+  { id: 'deep-engawa', label: 'Deep engawa (15°)',     values: { pitchDeg: 15, engawaWidthGu: 45, floorHeightGu: 20 } },
 ]
 
 export const parts = ({
   pitchDeg,
   engawaWidthGu,
+  floorHeightGu,
 }: {
   pitchDeg: number
   engawaWidthGu: number
+  floorHeightGu: number
 }) => {
   // ── Named position constants ──────────────────────────────────────────────
   // Avoids POST_X[i] array-index arithmetic at every usage site. The class of
@@ -87,6 +96,8 @@ export const parts = ({
   // ── Post heights ──────────────────────────────────────────────────────────
   // Roof pivots at the top of the front wall posts. Back wall rises, engawa drops.
   // Horizontal distances measured from front rail (y = yF = 63).
+  const FLOOR_Z = floorHeightGu
+
   const tanPitch      = Math.tan(pitchDeg * Math.PI / 180)
   const POST_H_FRONT  = FLOOR_Z + 60
   const riseGu        = Math.round((yF - yB) * tanPitch)   // rise from front to back rail
@@ -113,16 +124,16 @@ export const parts = ({
 
   return [
     // ── Posts ─────────────────────────────────────────────────────────────
-    Beam120.Z({ id: 'post-b-w', x: xW, y: yB, z: [0, POST_H_BACK - 4] }),
-    Beam120.Z({ id: 'post-b-m', x: xC, y: yB, z: [0, POST_H_BACK - 2] }),
-    Beam120.Z({ id: 'post-b-e', x: xE, y: yB, z: [0, POST_H_BACK - 4] }),
+    Beam120.Z({ id: 'post-b-w', x: xW, y: yB, z: [0, POST_H_BACK - 3] }),
+    Beam120.Z({ id: 'post-b-m', x: xC, y: yB, z: [0, POST_H_BACK - 3] }),
+    Beam120.Z({ id: 'post-b-e', x: xE, y: yB, z: [0, POST_H_BACK - 3] }),
 
-    Beam120.Z({ id: 'post-f-w', x: xW, y: yF, z: [0, POST_H_FRONT - 5] }),
-    Beam120.Z({ id: 'post-f-m', x: xC, y: yF - 1, z: [0, POST_H_FRONT - 2] }),
-    Beam120.Z({ id: 'post-f-e', x: xE, y: yF, z: [0, POST_H_FRONT - 2] }),
+    Beam120.Z({ id: 'post-f-w', x: xW, y: yF, z: [0, POST_H_FRONT - 3] }),
+    Beam120.Z({ id: 'post-f-m', x: xC, y: yF - 1, z: [0, POST_H_FRONT - 3] }),
+    Beam120.Z({ id: 'post-f-e', x: xE, y: yF, z: [0, POST_H_FRONT - 3] }),
 
     Beam120.Z({ id: 'post-e-w', x: xW, y: yE, z: [0, POST_H_ENGAWA - 3] }),
-    Beam120.Z({ id: 'post-e-m', x: xC, y: yE, z: [0, POST_H_ENGAWA - 4] }),
+    Beam120.Z({ id: 'post-e-m', x: xC, y: yE, z: [0, POST_H_ENGAWA - 3] }),
     Beam120.Z({ id: 'post-e-e', x: xE, y: yE, z: [0, POST_H_ENGAWA - 2] }),
 
     // ── Floor beams — X (fit between posts in each bay) ───────────────────
@@ -208,7 +219,7 @@ export const parts = ({
     // ── Front wall — 2 bays × 3 panels ───────────────────────────────────
     WallFrame.XZ({ id: 'wall-f-1-a', x: [xWE,      xWE + 20], y: yF, z: [FLOOR_Z, POST_H_FRONT] }),
     WallFrame.XZ({ id: 'wall-f-1-b', x: [xWE + 20, xWE + 40], y: yF, z: [FLOOR_Z, POST_H_FRONT] }),
-    WallFrame.XZ({ id: 'wall-f-1-c', x: [xWE + 40, xC],       y: yF, z: [FLOOR_Z, POST_H_FRONT] }),
+    WallFrame.XZ({ id: 'wall-f-1-c', x: [xWE + 40, xC],       y: yF, z: [FLOOR_Z, POST_H_FRONT - 1] }),
     WallFrame.XZ({ id: 'wall-f-2-a', x: [xCE,      xCE + 20], y: yF, z: [FLOOR_Z, POST_H_FRONT] }),
     WallFrame.XZ({ id: 'wall-f-2-b', x: [xCE + 20, xCE + 40], y: yF, z: [FLOOR_Z, POST_H_FRONT] }),
     WallFrame.XZ({ id: 'wall-f-2-c', x: [xCE + 40, xE],       y: yF, z: [FLOOR_Z, POST_H_FRONT] }),
